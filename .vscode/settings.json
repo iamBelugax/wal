@@ -7,11 +7,13 @@
     "extendee",
     "fgithub",
     "Idxs",
+    "msgpack",
     "protoc",
     "protogen",
     "protoimpl",
     "protoreflect",
     "unkeyed",
+    "vmihailenco",
     "walpb",
     "walpbb"
   ]
