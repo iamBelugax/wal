@@ -49,7 +49,7 @@ func MakeSegmentName(id uint64) (string, error) {
 // ExtractSegmentID parses a WAL segment filename and returns its numeric ID.
 func ExtractSegmentID(name string) (uint64, error) {
 	if !strings.HasSuffix(name, SegmentSuffix) {
-		return 0, fmt.Errorf("invalid segment filename: missing .wal suffix")
+		return 0, fmt.Errorf("invalid segment filename: missing %s suffix", SegmentSuffix)
 	}
 
 	base := strings.TrimSuffix(name, SegmentSuffix)
