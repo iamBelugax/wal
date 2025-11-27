@@ -65,6 +65,7 @@ func WithMsgPackEncoder() Option {
 func DefaultOptions() *options {
 	return &options{
 		SyncOnWrite: false,
+		DataDir:     DataDir,
 		BufferSize:  BufferSize,
 		SegmentSize: SegmentSize,
 		PageSize:    uint16(os.Getpagesize()),
