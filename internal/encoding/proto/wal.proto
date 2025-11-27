@@ -1,0 +1,51 @@
+edition = "2024";
+
+package walpb.v1;
+
+option go_package = "github.com/iamBelugax/wal;walpb";
+
+// RecordKind describes the logical type of a WAL record.
+enum RecordKind {
+  UNSPECIFIED    = 0;
+  SEGMENT_HEADER = 1;
+  DATA           = 2;
+  ROTATION       = 3;
+  CHECKPOINT     = 4;
+}
+
+// RecordHeader describes metadata that applies to a single WAL record.
+message RecordHeader {
+  // Log Sequence Number (LSN) of this record.
+  uint64 lsn = 1;
+
+  // LSN of the previous record in the log.
+  uint64 previous_lsn = 2;
+
+  // Wall clock time when this record was created.
+  uint64 timestamp = 3;
+
+  // Header checksum, used to detect corruption of the header fields.
+  uint32 checksum = 4;
+
+  // Magic constant to quickly verify you're reading a valid WAL record.
+  uint32 magic = 5;
+
+  // Version of the WAL on disk format.
+  uint32 version = 6;
+}
+
+
+// Record is the physical unit written to and read from the WAL stream.
+message Record {
+  // Logical kind of this record (see RecordKind).
+  RecordKind kind = 1;
+
+  // Checksum for the record contents.
+  uint32 checksum = 2;
+
+  // Actual data carried by the record.
+  bytes payload = 3;
+
+  // Optional padding bytes to align records on disk.
+  bytes padded = 4;
+}
