@@ -31,8 +31,6 @@ gen-pb: clean-proto-gen
 	@protoc \
 		--go_out=$(PROTO_OUT_DIR) \
 		--go_opt=module=$(MODULE_PATH) \
-		--go-grpc_out=$(PROTO_OUT_DIR) \
-		--go-grpc_opt=module=$(MODULE_PATH) \
 		--proto_path=$(PROTO_DIR) \
 		$(PROTO_DIR)/wal.proto
 	@echo "$(GREEN) Protocol Buffer and GRPC generation complete$(RESET)"
