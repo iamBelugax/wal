@@ -3,14 +3,15 @@ package wal
 import (
 	"strings"
 
+	"github.com/iamBelugax/wal/internal/domain"
 	"github.com/iamBelugax/wal/internal/encoding"
 )
 
 // Encoder defines the interface for WAL record codecs.
 type Encoder interface {
 	Name() string
-	Encode(*encoding.Record) ([]byte, error)
-	Decode([]byte) (*encoding.Record, error)
+	Encode(*domain.Record) ([]byte, error)
+	Decode([]byte) (*domain.Record, error)
 }
 
 // options configures the behavior of the Write-Ahead Log.

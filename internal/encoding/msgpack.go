@@ -1,6 +1,7 @@
 package encoding
 
 import (
+	"github.com/iamBelugax/wal/internal/domain"
 	"github.com/vmihailenco/msgpack/v5"
 )
 
@@ -16,13 +17,13 @@ func (*msgPackEncoder) Name() string {
 }
 
 // Encode serializes a WAL record into MessagePack format.
-func (e *msgPackEncoder) Encode(record *Record) ([]byte, error) {
+func (e *msgPackEncoder) Encode(record *domain.Record) ([]byte, error) {
 	return msgpack.Marshal(record)
 }
 
 // Decode deserializes MessagePack encoded data into a WAL record.
-func (e *msgPackEncoder) Decode(data []byte) (*Record, error) {
-	result := &Record{}
+func (e *msgPackEncoder) Decode(data []byte) (*domain.Record, error) {
+	result := &domain.Record{}
 
 	if err := msgpack.Unmarshal(data, result); err != nil {
 		return nil, err

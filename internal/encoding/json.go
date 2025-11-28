@@ -2,6 +2,8 @@ package encoding
 
 import (
 	"encoding/json"
+
+	"github.com/iamBelugax/wal/internal/domain"
 )
 
 type jsonEncoder struct{}
@@ -16,13 +18,13 @@ func (*jsonEncoder) Name() string {
 }
 
 // Encode serializes a WAL record into JSON form.
-func (*jsonEncoder) Encode(record *Record) ([]byte, error) {
+func (*jsonEncoder) Encode(record *domain.Record) ([]byte, error) {
 	return json.Marshal(record)
 }
 
 // Decode deserializes JSON data into a WAL record.
-func (*jsonEncoder) Decode(encoded []byte) (*Record, error) {
-	record := &Record{}
+func (*jsonEncoder) Decode(encoded []byte) (*domain.Record, error) {
+	record := &domain.Record{}
 
 	if err := json.Unmarshal(encoded, record); err != nil {
 		return nil, err

@@ -1,4 +1,4 @@
-package encoding
+package domain
 
 import walpb "github.com/iamBelugax/wal/internal/encoding/proto/__gen__"
 
@@ -43,19 +43,4 @@ func ToPBKind(kind RecordKind) walpb.RecordKind {
 	default:
 		return walpb.RecordKind_UNSPECIFIED
 	}
-}
-
-// Record is the physical unit written to and read from the WAL.
-type Record struct {
-	// Logical kind of this record (see RecordKind).
-	Kind RecordKind `json:"kind" msgpack:"kind" gob:"kind"`
-
-	// Checksum for the record contents.
-	Checksum uint32 `json:"checksum" msgpack:"checksum" gob:"checksum"`
-
-	// Actual data carried by the record.
-	Payload []byte `json:"payload" msgpack:"payload" gob:"payload"`
-
-	// Optional padding bytes to align records on disk.
-	Padded []byte `json:"padded,omitempty" msgpack:"padded,omitempty" gob:"padded"`
 }

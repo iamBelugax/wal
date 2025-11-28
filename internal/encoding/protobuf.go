@@ -1,6 +1,7 @@
 package encoding
 
 import (
+	"github.com/iamBelugax/wal/internal/domain"
 	walpb "github.com/iamBelugax/wal/internal/encoding/proto/__gen__"
 	"google.golang.org/protobuf/proto"
 )
@@ -29,26 +30,26 @@ func (*protoBufEncoder) Name() string {
 }
 
 // Encode deterministically serializes a WAL record into protobuf binary form.
-func (pbe *protoBufEncoder) Encode(record *Record) ([]byte, error) {
+func (pbe *protoBufEncoder) Encode(record *domain.Record) ([]byte, error) {
 	pb := &walpb.Record{}
 	pb.SetChecksum(record.Checksum)
-	pb.SetKind(ToPBKind(record.Kind))
+	pb.SetKind(domain.ToPBKind(record.Kind))
 	pb.SetPadded(record.Padded)
 	pb.SetPayload(record.Payload)
 	return pbe.encoder.Marshal(pb)
 }
 
 // Decode deserializes protobuf binary data into a WAL record.
-func (pbe *protoBufEncoder) Decode(encoded []byte) (*Record, error) {
+func (pbe *protoBufEncoder) Decode(encoded []byte) (*domain.Record, error) {
 	pb := &walpb.Record{}
 	if err := pbe.decoder.Unmarshal(encoded, pb); err != nil {
 		return nil, err
 	}
 
-	return &Record{
-		Kind:     FromPBKind(pb.GetKind()),
-		Checksum: pb.GetChecksum(),
-		Payload:  pb.GetPayload(),
+	return &domain.Record{
 		Padded:   pb.GetPadded(),
+		Payload:  pb.GetPayload(),
+		Checksum: pb.GetChecksum(),
+		Kind:     domain.FromPBKind(pb.GetKind()),
 	}, nil
 }
