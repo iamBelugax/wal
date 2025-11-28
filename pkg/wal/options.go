@@ -1,7 +1,7 @@
 package wal
 
 import (
-	"os"
+	"strings"
 
 	"github.com/iamBelugax/wal/internal/encoding"
 )
@@ -16,24 +16,35 @@ type Encoder interface {
 // options configures the behavior of the Write-Ahead Log.
 type options struct {
 	// Encoder is used to encode and decode WAL records.
-	// Defaults to protobuf via NewProtobufEncoder().
+	//
+	// Default: Protobuf Encoder
 	Encoder Encoder
 
 	// DataDir is the directory where WAL segments are stored.
+	//
+	// Default: "/var/lib/wal"
 	DataDir string
 
 	// SegmentSize is the maximum size (in bytes) of a WAL segment
 	// before a new one is created.
+	//
+	// Default: 64MB
 	SegmentSize uint32
 
 	// BufferSize controls the size of the internal write buffer in bytes.
+	//
+	// Default: 4MB
 	BufferSize uint32
 
-	// PageSize controls low level alignment for WAL writes.
-	// Defaults to os.Getpagesize().
+	// PageSize represents the I/O alignment size (in bytes) used
+	// when writing WAL pages.
+	//
+	// Default: 4KB
 	PageSize uint16
 
 	// SyncOnWrite forces an fsync after every write when set to true.
+	//
+	// Default: false
 	SyncOnWrite bool
 }
 
@@ -61,14 +72,58 @@ func WithMsgPackEncoder() Option {
 	}
 }
 
+// WithDataDir sets the directory in which WAL segments will be stored.
+func WithDataDir(dir string) Option {
+	return func(o *options) {
+		dir = strings.TrimSpace(dir)
+		if dir != "" {
+			o.DataDir = dir
+		}
+	}
+}
+
+// WithSegmentSize overrides the default WAL segment size.
+func WithSegmentSize(size uint32) Option {
+	return func(o *options) {
+		if size > 0 {
+			o.SegmentSize = size
+		}
+	}
+}
+
+// WithBufferSize overrides the default write buffer size.
+func WithBufferSize(size uint32) Option {
+	return func(o *options) {
+		if size > 0 {
+			o.BufferSize = size
+		}
+	}
+}
+
+// WithPageSize overrides the WAL page alignment size.
+func WithPageSize(size uint16) Option {
+	return func(o *options) {
+		if size > 0 {
+			o.PageSize = size
+		}
+	}
+}
+
+// WithSyncOnWrite toggles per write fsync behavior.
+func WithSyncOnWrite(sync bool) Option {
+	return func(o *options) {
+		o.SyncOnWrite = sync
+	}
+}
+
 // DefaultOptions returns the default WAL options.
 func DefaultOptions() *options {
 	return &options{
 		SyncOnWrite: false,
 		DataDir:     DataDir,
+		PageSize:    PageSize,
 		BufferSize:  BufferSize,
 		SegmentSize: SegmentSize,
-		PageSize:    uint16(os.Getpagesize()),
 		Encoder:     encoding.NewProtobufEncoder(),
 	}
 }

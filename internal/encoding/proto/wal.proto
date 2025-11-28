@@ -34,7 +34,6 @@ message RecordHeader {
   fixed32 version = 6;
 }
 
-
 // Record is the physical unit written to and read from the WAL stream.
 message Record {
   // Logical kind of this record (see RecordKind).

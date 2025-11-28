@@ -7,13 +7,16 @@ import (
 )
 
 const (
-	// BufferSize is the default size (in bytes) of the internal write buffer.
-	// Currently set to 4MB.
-	BufferSize uint32 = 4 * 1024 * 1024
+	// BufferSize is the default size (4MB in bytes) of the internal write buffer.
+	BufferSize = 4 * 1024 * 1024
 
-	// SegmentSize is the default maximum size (in bytes) of a WAL segment
-	// before rotation occurs. Currently set to 64MB.
-	SegmentSize uint32 = 64 * 1024 * 1024
+	// SegmentSize is the default maximum size (64MB in bytes) of a WAL segment
+	// before rotation occurs.
+	SegmentSize = 64 * 1024 * 1024
+
+	// PageSize represents the I/O alignment size (4KB in bytes) used
+	// when writing WAL pages.
+	PageSize = 4 * 1024
 
 	// SegmentNameFormat defines the filename format of WAL segment files.
 	// "%016d.wal" produces a 16 digit, zero padded decimal ID followed by ".wal".
