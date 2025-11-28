@@ -13,6 +13,21 @@ const (
 	RecordKindCheckpoint
 )
 
+func (k RecordKind) String() string {
+	switch k {
+	case RecordKindSegmentHeader:
+		return "SEGMENT_HEADER"
+	case RecordKindData:
+		return "DATA"
+	case RecordKindRotation:
+		return "ROTATION"
+	case RecordKindCheckpoint:
+		return "CHECKPOINT"
+	default:
+		return "UNSPECIFIED"
+	}
+}
+
 // FromPBKind converts a protobuf RecordKind into the local RecordKind.
 func FromPBKind(kind walpb.RecordKind) RecordKind {
 	switch kind {

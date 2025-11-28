@@ -26,7 +26,7 @@ type Header struct {
 	// Time the record was created.
 	Timestamp uint64 `json:"timestamp" msgpack:"timestamp" gob:"timestamp"`
 
-	// Data integrity check value.
+	// Checksum for the header contents.
 	Checksum uint32 `json:"checksum" msgpack:"checksum" gob:"checksum"`
 
 	// Identifier to validate record format.
