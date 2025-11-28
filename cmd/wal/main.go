@@ -10,6 +10,12 @@ import (
 )
 
 func main() {
+	dir, _ := os.Getwd()
+	if _, err := wal.Open(wal.WithDataDir(dir)); err != nil {
+		fmt.Println("Error :", err)
+		os.Exit(1)
+	}
+
 	name, err := wal.MakeSegmentName(1234567890)
 	if err != nil {
 		fmt.Println("Error :", err)
@@ -25,11 +31,6 @@ func main() {
 	}
 
 	fmt.Println("Extracted ID :", id)
-
-	if _, err = wal.Open(); err != nil {
-		fmt.Println("Error :", err)
-		os.Exit(1)
-	}
 
 	val := walpb.RecordHeader{}
 	val.SetMagic(999999999)

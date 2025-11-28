@@ -2,6 +2,8 @@ package wal
 
 import (
 	"fmt"
+	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -57,13 +59,30 @@ func ExtractSegmentID(name string) (uint64, error) {
 
 	base := strings.TrimSuffix(name, SegmentSuffix)
 	if len(base) != SegmentDigits {
-		return 0, fmt.Errorf("invalid segment filename: wrong ID length")
+		return 0, fmt.Errorf("invalid segment filename: wrong id length")
 	}
 
 	id, err := strconv.ParseUint(base, 10, 64)
 	if err != nil {
-		return 0, fmt.Errorf("invalid segment ID: %w", err)
+		return 0, fmt.Errorf("invalid id: %w", err)
 	}
 
 	return id, nil
+}
+
+// LastSegmentID returns the highest segment ID found in the directory.
+func LastSegmentID(dir string) (uint64, error) {
+	pattern := filepath.Join(dir, "*"+SegmentSuffix)
+
+	fileNames, err := filepath.Glob(pattern)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(fileNames) == 0 {
+		return 0, nil
+	}
+
+	slices.Sort(fileNames)
+	return ExtractSegmentID(filepath.Base(fileNames[len(fileNames)-1]))
 }
