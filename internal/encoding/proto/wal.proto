@@ -16,22 +16,22 @@ enum RecordKind {
 // RecordHeader describes metadata that applies to a single WAL record.
 message RecordHeader {
   // Log Sequence Number (LSN) of this record.
-  uint64 lsn = 1;
+  fixed64 lsn = 1;
 
   // LSN of the previous record in the log.
-  uint64 previous_lsn = 2;
+  fixed64 previous_lsn = 2;
 
   // Wall clock time when this record was created.
-  uint64 timestamp = 3;
+  fixed64 timestamp = 3;
 
   // Header checksum, used to detect corruption of the header fields.
-  uint32 checksum = 4;
+  fixed32 checksum = 4;
 
   // Magic constant to quickly verify you're reading a valid WAL record.
-  uint32 magic = 5;
+  fixed32 magic = 5;
 
   // Version of the WAL on disk format.
-  uint32 version = 6;
+  fixed32 version = 6;
 }
 
 

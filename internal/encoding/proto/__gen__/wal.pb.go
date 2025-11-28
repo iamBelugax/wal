@@ -74,12 +74,12 @@ func (x RecordKind) Number() protoreflect.EnumNumber {
 // RecordHeader describes metadata that applies to a single WAL record.
 type RecordHeader struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Lsn         uint64                 `protobuf:"varint,1,opt,name=lsn"`
-	xxx_hidden_PreviousLsn uint64                 `protobuf:"varint,2,opt,name=previous_lsn,json=previousLsn"`
-	xxx_hidden_Timestamp   uint64                 `protobuf:"varint,3,opt,name=timestamp"`
-	xxx_hidden_Checksum    uint32                 `protobuf:"varint,4,opt,name=checksum"`
-	xxx_hidden_Magic       uint32                 `protobuf:"varint,5,opt,name=magic"`
-	xxx_hidden_Version     uint32                 `protobuf:"varint,6,opt,name=version"`
+	xxx_hidden_Lsn         uint64                 `protobuf:"fixed64,1,opt,name=lsn"`
+	xxx_hidden_PreviousLsn uint64                 `protobuf:"fixed64,2,opt,name=previous_lsn,json=previousLsn"`
+	xxx_hidden_Timestamp   uint64                 `protobuf:"fixed64,3,opt,name=timestamp"`
+	xxx_hidden_Checksum    uint32                 `protobuf:"fixed32,4,opt,name=checksum"`
+	xxx_hidden_Magic       uint32                 `protobuf:"fixed32,5,opt,name=magic"`
+	xxx_hidden_Version     uint32                 `protobuf:"fixed32,6,opt,name=version"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -487,12 +487,12 @@ const file_wal_proto_rawDesc = "" +
 	"\n" +
 	"\twal.proto\x12\bwalpb.v1\"\xad\x01\n" +
 	"\fRecordHeader\x12\x10\n" +
-	"\x03lsn\x18\x01 \x01(\x04R\x03lsn\x12!\n" +
-	"\fprevious_lsn\x18\x02 \x01(\x04R\vpreviousLsn\x12\x1c\n" +
-	"\ttimestamp\x18\x03 \x01(\x04R\ttimestamp\x12\x1a\n" +
-	"\bchecksum\x18\x04 \x01(\rR\bchecksum\x12\x14\n" +
-	"\x05magic\x18\x05 \x01(\rR\x05magic\x12\x18\n" +
-	"\aversion\x18\x06 \x01(\rR\aversion\"\x80\x01\n" +
+	"\x03lsn\x18\x01 \x01(\x06R\x03lsn\x12!\n" +
+	"\fprevious_lsn\x18\x02 \x01(\x06R\vpreviousLsn\x12\x1c\n" +
+	"\ttimestamp\x18\x03 \x01(\x06R\ttimestamp\x12\x1a\n" +
+	"\bchecksum\x18\x04 \x01(\aR\bchecksum\x12\x14\n" +
+	"\x05magic\x18\x05 \x01(\aR\x05magic\x12\x18\n" +
+	"\aversion\x18\x06 \x01(\aR\aversion\"\x80\x01\n" +
 	"\x06Record\x12(\n" +
 	"\x04kind\x18\x01 \x01(\x0e2\x14.walpb.v1.RecordKindR\x04kind\x12\x1a\n" +
 	"\bchecksum\x18\x02 \x01(\rR\bchecksum\x12\x18\n" +
