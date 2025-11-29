@@ -36,3 +36,4 @@ go.work.sum
 *.md
 *.json
 !README.md
+*.DS_Store
