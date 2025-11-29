@@ -6,15 +6,17 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/iamBelugax/wal/pkg/wal"
 )
 
-// 50,000 records with 730 Bytes each (36.5 MB) with 1KB Page Size -  51.2 MB (Overhead 47.1%)
-// 50,000 records with 730 Bytes each (36.5 MB) with 2KB Page Size - 102.4 MB (Overhead of fucking 194.83%)
-// 50,000 records with 730 Bytes each (36.5 MB) with 4KB Page Size - 204.8 MB (Overhead of fucking 488.37%)
+// 50,000 records at 730 bytes each (36.5 MB) with a 1KB page size = 51.2 MB (Overhead: 47.1%)
+// 50,000 records at 730 bytes each (36.5 MB) with a 2KB page size = 102.4 MB (Overhead: fucking 194.83%)
+// 50,000 records at 730 bytes each (36.5 MB) with a 4KB page size = 204.8 MB (Overhead: fucking 488.37%)
 //
-// The average payload size should be approximately equal to the Page Size.
+// I was just messing around with testing how long it takes without calling Sync
+// for each write but damn, it’s so good. For 100K records, each being 4KB, it took 1.04760275 seconds.
 
 func main() {
 	pwd, err := os.Getwd()
@@ -36,7 +38,9 @@ func main() {
 		wal.Close(context.Background())
 	}()
 
-	for i := range 50000 {
+	start := time.Now()
+
+	for i := range 100000 {
 		lsn, err := wal.Append(context.Background(), jsonBytes)
 		if err != nil {
 			log.Fatalln("Failed to append :", err)
@@ -49,4 +53,6 @@ func main() {
 
 		fmt.Printf("ID - %d, LSN - %d \n", i+1, entry.Header.LSN)
 	}
+
+	fmt.Println("\n Time Taken", time.Since(start).Nanoseconds())
 }

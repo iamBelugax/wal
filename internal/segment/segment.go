@@ -37,9 +37,9 @@ func (s *Segment) Append(ctx context.Context, record []byte) (uint64, error) {
 		return 0, err
 	}
 
-	if err := s.file.Sync(); err != nil {
-		return 0, err
-	}
+	// if err := s.file.Sync(); err != nil {
+	// 	return 0, err
+	// }
 
 	return 0, nil
 }
@@ -63,5 +63,8 @@ func (s *Segment) Seek(offset int64, whence int) (int64, error) {
 }
 
 func (s *Segment) Close() error {
+	if err := s.file.Sync(); err != nil {
+		return err
+	}
 	return s.file.Close()
 }
