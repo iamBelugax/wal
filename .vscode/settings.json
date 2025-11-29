@@ -1,26 +1,22 @@
 {
   "cSpell.words": [
-    "beditionsp",
     "Belugax",
     "Checksumer",
     "coverprofile",
     "dylib",
     "Errorw",
-    "extendee",
-    "fgithub",
     "filesys",
+    "golangci",
+    "GOPATH",
     "iamnilotpal",
     "Idxs",
     "Infow",
     "msgpack",
-    "multierr",
     "protoc",
     "protogen",
     "protoimpl",
     "protoreflect",
-    "tagparser",
     "unkeyed",
-    "vmihailenco",
     "walpb",
     "walpbb"
   ]

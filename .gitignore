@@ -38,3 +38,4 @@ go.work.sum
 !README.md
 *.DS_Store
 internal/encoding/proto/__gen__/
+bin/

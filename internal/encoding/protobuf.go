@@ -1,8 +1,9 @@
 package encoding
 
 import (
-	"github.com/iamBelugax/wal/internal/domain"
 	walpb "github.com/iamBelugax/wal/internal/encoding/proto/__gen__"
+
+	"github.com/iamBelugax/wal/internal/domain"
 	"google.golang.org/protobuf/proto"
 )
 
