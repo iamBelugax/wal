@@ -3,23 +3,19 @@ package wal
 import (
 	"strings"
 
+	"github.com/iamBelugax/wal/internal/checksum"
 	"github.com/iamBelugax/wal/internal/domain"
 	"github.com/iamBelugax/wal/internal/encoding"
 )
-
-// Encoder defines the interface for WAL record codecs.
-type Encoder interface {
-	Name() string
-	Encode(*domain.Record) ([]byte, error)
-	Decode([]byte) (*domain.Record, error)
-}
 
 // options configures the behavior of the Write-Ahead Log.
 type options struct {
 	// Encoder is used to encode and decode WAL records.
 	//
 	// Default: Protobuf Encoder
-	Encoder Encoder
+	Encoder domain.Encoder
+
+	Checksumer domain.Checksumer
 
 	// DataDir is the directory where WAL segments are stored.
 	//
@@ -42,36 +38,10 @@ type options struct {
 	//
 	// Default: 4KB
 	PageSize uint16
-
-	// SyncOnWrite forces an fsync after every write when set to true.
-	//
-	// Default: false
-	SyncOnWrite bool
 }
 
 // Option applies a configuration change to Options.
 type Option func(*options)
-
-// WithJSONEncoder sets the WAL encoder to JSON.
-func WithJSONEncoder() Option {
-	return func(o *options) {
-		o.Encoder = encoding.NewJSONEncoder()
-	}
-}
-
-// WithGOBEncoder sets the WAL encoder to Go's gob encoding.
-func WithGOBEncoder() Option {
-	return func(o *options) {
-		o.Encoder = encoding.NewGobEncoder()
-	}
-}
-
-// WithMsgPackEncoder sets the WAL encoder to MessagePack.
-func WithMsgPackEncoder() Option {
-	return func(o *options) {
-		o.Encoder = encoding.NewMsgPackEncoder()
-	}
-}
 
 // WithDataDir sets the directory in which WAL segments will be stored.
 func WithDataDir(dir string) Option {
@@ -110,21 +80,14 @@ func WithPageSize(size uint16) Option {
 	}
 }
 
-// WithSyncOnWrite toggles per write fsync behavior.
-func WithSyncOnWrite(sync bool) Option {
-	return func(o *options) {
-		o.SyncOnWrite = sync
-	}
-}
-
 // DefaultOptions returns the default WAL options.
 func DefaultOptions() *options {
 	return &options{
-		SyncOnWrite: false,
 		DataDir:     DataDir,
 		PageSize:    PageSize,
 		BufferSize:  BufferSize,
 		SegmentSize: SegmentSize,
+		Checksumer:  checksum.NewCRC(),
 		Encoder:     encoding.NewProtobufEncoder(),
 	}
 }

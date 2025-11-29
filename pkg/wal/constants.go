@@ -41,6 +41,12 @@ const (
 
 	// MetaDir is the directory where the metadata for WAL files is stored.
 	MetaDir = DataDir + "/meta"
+
+	Version = 1
+
+	Magic = 1
+
+	HeaderSize = 51
 )
 
 // MakeSegmentName returns the filename for a WAL segment based on its numeric ID.
@@ -85,4 +91,16 @@ func LastSegmentID(dir string) (uint64, error) {
 
 	slices.Sort(fileNames)
 	return ExtractSegmentID(filepath.Base(fileNames[len(fileNames)-1]))
+}
+
+// CalculatePadding returns how many padding bytes are needed to make
+// HeaderSize + bytes align to pageSize. If it't already aligned, it returns 0.
+func CalculatePadding(pageSize uint, bytes int) uint32 {
+	totalBytes := HeaderSize + bytes
+	mod := totalBytes % int(pageSize)
+
+	if mod == 0 {
+		return 0
+	}
+	return uint32(pageSize) - uint32(mod) - 1
 }
