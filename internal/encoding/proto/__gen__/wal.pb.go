@@ -76,10 +76,11 @@ type RecordHeader struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Lsn         uint64                 `protobuf:"fixed64,1,opt,name=lsn"`
 	xxx_hidden_PreviousLsn uint64                 `protobuf:"fixed64,2,opt,name=previous_lsn,json=previousLsn"`
-	xxx_hidden_Timestamp   uint64                 `protobuf:"fixed64,3,opt,name=timestamp"`
-	xxx_hidden_Checksum    uint32                 `protobuf:"fixed32,4,opt,name=checksum"`
-	xxx_hidden_Magic       uint32                 `protobuf:"fixed32,5,opt,name=magic"`
-	xxx_hidden_Version     uint32                 `protobuf:"fixed32,6,opt,name=version"`
+	xxx_hidden_RecordSize  uint64                 `protobuf:"fixed64,3,opt,name=record_size,json=recordSize"`
+	xxx_hidden_Timestamp   uint64                 `protobuf:"fixed64,4,opt,name=timestamp"`
+	xxx_hidden_Checksum    uint32                 `protobuf:"fixed32,5,opt,name=checksum"`
+	xxx_hidden_Magic       uint32                 `protobuf:"fixed32,6,opt,name=magic"`
+	xxx_hidden_Version     uint32                 `protobuf:"fixed32,7,opt,name=version"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -125,6 +126,13 @@ func (x *RecordHeader) GetPreviousLsn() uint64 {
 	return 0
 }
 
+func (x *RecordHeader) GetRecordSize() uint64 {
+	if x != nil {
+		return x.xxx_hidden_RecordSize
+	}
+	return 0
+}
+
 func (x *RecordHeader) GetTimestamp() uint64 {
 	if x != nil {
 		return x.xxx_hidden_Timestamp
@@ -155,32 +163,37 @@ func (x *RecordHeader) GetVersion() uint32 {
 
 func (x *RecordHeader) SetLsn(v uint64) {
 	x.xxx_hidden_Lsn = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
 func (x *RecordHeader) SetPreviousLsn(v uint64) {
 	x.xxx_hidden_PreviousLsn = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
+}
+
+func (x *RecordHeader) SetRecordSize(v uint64) {
+	x.xxx_hidden_RecordSize = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
 }
 
 func (x *RecordHeader) SetTimestamp(v uint64) {
 	x.xxx_hidden_Timestamp = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
 }
 
 func (x *RecordHeader) SetChecksum(v uint32) {
 	x.xxx_hidden_Checksum = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
 }
 
 func (x *RecordHeader) SetMagic(v uint32) {
 	x.xxx_hidden_Magic = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
 }
 
 func (x *RecordHeader) SetVersion(v uint32) {
 	x.xxx_hidden_Version = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
 }
 
 func (x *RecordHeader) HasLsn() bool {
@@ -197,32 +210,39 @@ func (x *RecordHeader) HasPreviousLsn() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *RecordHeader) HasTimestamp() bool {
+func (x *RecordHeader) HasRecordSize() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *RecordHeader) HasChecksum() bool {
+func (x *RecordHeader) HasTimestamp() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *RecordHeader) HasMagic() bool {
+func (x *RecordHeader) HasChecksum() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *RecordHeader) HasVersion() bool {
+func (x *RecordHeader) HasMagic() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *RecordHeader) HasVersion() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
 func (x *RecordHeader) ClearLsn() {
@@ -235,23 +255,28 @@ func (x *RecordHeader) ClearPreviousLsn() {
 	x.xxx_hidden_PreviousLsn = 0
 }
 
-func (x *RecordHeader) ClearTimestamp() {
+func (x *RecordHeader) ClearRecordSize() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RecordSize = 0
+}
+
+func (x *RecordHeader) ClearTimestamp() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Timestamp = 0
 }
 
 func (x *RecordHeader) ClearChecksum() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_Checksum = 0
 }
 
 func (x *RecordHeader) ClearMagic() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_Magic = 0
 }
 
 func (x *RecordHeader) ClearVersion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_Version = 0
 }
 
@@ -262,6 +287,8 @@ type RecordHeader_builder struct {
 	Lsn *uint64
 	// LSN of the previous record in the log.
 	PreviousLsn *uint64
+	// Size of the record payload in bytes.
+	RecordSize *uint64
 	// Wall clock time when this record was created.
 	Timestamp *uint64
 	// Header checksum, used to detect corruption of the header fields.
@@ -277,27 +304,31 @@ func (b0 RecordHeader_builder) Build() *RecordHeader {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Lsn != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
 		x.xxx_hidden_Lsn = *b.Lsn
 	}
 	if b.PreviousLsn != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
 		x.xxx_hidden_PreviousLsn = *b.PreviousLsn
 	}
+	if b.RecordSize != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
+		x.xxx_hidden_RecordSize = *b.RecordSize
+	}
 	if b.Timestamp != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
 		x.xxx_hidden_Timestamp = *b.Timestamp
 	}
 	if b.Checksum != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
 		x.xxx_hidden_Checksum = *b.Checksum
 	}
 	if b.Magic != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
 		x.xxx_hidden_Magic = *b.Magic
 	}
 	if b.Version != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
 		x.xxx_hidden_Version = *b.Version
 	}
 	return m0
@@ -485,14 +516,16 @@ var File_wal_proto protoreflect.FileDescriptor
 
 const file_wal_proto_rawDesc = "" +
 	"\n" +
-	"\twal.proto\x12\bwalpb.v1\"\xad\x01\n" +
+	"\twal.proto\x12\bwalpb.v1\"\xce\x01\n" +
 	"\fRecordHeader\x12\x10\n" +
 	"\x03lsn\x18\x01 \x01(\x06R\x03lsn\x12!\n" +
-	"\fprevious_lsn\x18\x02 \x01(\x06R\vpreviousLsn\x12\x1c\n" +
-	"\ttimestamp\x18\x03 \x01(\x06R\ttimestamp\x12\x1a\n" +
-	"\bchecksum\x18\x04 \x01(\aR\bchecksum\x12\x14\n" +
-	"\x05magic\x18\x05 \x01(\aR\x05magic\x12\x18\n" +
-	"\aversion\x18\x06 \x01(\aR\aversion\"\x80\x01\n" +
+	"\fprevious_lsn\x18\x02 \x01(\x06R\vpreviousLsn\x12\x1f\n" +
+	"\vrecord_size\x18\x03 \x01(\x06R\n" +
+	"recordSize\x12\x1c\n" +
+	"\ttimestamp\x18\x04 \x01(\x06R\ttimestamp\x12\x1a\n" +
+	"\bchecksum\x18\x05 \x01(\aR\bchecksum\x12\x14\n" +
+	"\x05magic\x18\x06 \x01(\aR\x05magic\x12\x18\n" +
+	"\aversion\x18\a \x01(\aR\aversion\"\x80\x01\n" +
 	"\x06Record\x12(\n" +
 	"\x04kind\x18\x01 \x01(\x0e2\x14.walpb.v1.RecordKindR\x04kind\x12\x1a\n" +
 	"\bchecksum\x18\x02 \x01(\rR\bchecksum\x12\x18\n" +

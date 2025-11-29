@@ -21,17 +21,20 @@ message RecordHeader {
   // LSN of the previous record in the log.
   fixed64 previous_lsn = 2;
 
+  // Size of the record payload in bytes.
+  fixed64 record_size = 3;
+
   // Wall clock time when this record was created.
-  fixed64 timestamp = 3;
+  fixed64 timestamp = 4;
 
   // Header checksum, used to detect corruption of the header fields.
-  fixed32 checksum = 4;
+  fixed32 checksum = 5;
 
   // Magic constant to quickly verify you're reading a valid WAL record.
-  fixed32 magic = 5;
+  fixed32 magic = 6;
 
   // Version of the WAL on disk format.
-  fixed32 version = 6;
+  fixed32 version = 7;
 }
 
 // Record is the physical unit written to and read from the WAL stream.
