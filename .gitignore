@@ -29,9 +29,10 @@ go.work.sum
 
 # Editor/IDE
 # .idea/
-# .vscode/
+!.vscode/
 
 *.log
 *.wal
 *.md
+*.json
 !README.md
