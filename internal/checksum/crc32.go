@@ -2,9 +2,11 @@ package checksum
 
 import "hash/crc32"
 
+// crc represents a CRC32 checksum calculator.
 type crc struct{}
 
-func NewCRC() *crc {
+// NewCRCChecksumer creates and returns a new CRC32 calculator.
+func NewCRCChecksumer() *crc {
 	return &crc{}
 }
 

@@ -15,6 +15,9 @@ type options struct {
 	// Default: Protobuf Encoder
 	Encoder domain.Encoder
 
+	// Checksumer is used to calculate checksums of WAL records.
+	//
+	// Default: CRC32
 	Checksumer domain.Checksumer
 
 	// DataDir is the directory where WAL segments are stored.
@@ -80,6 +83,15 @@ func WithPageSize(size uint16) Option {
 	}
 }
 
+// WithChecksumer overrides the default checksumer.
+func WithChecksumer(checksumer domain.Checksumer) Option {
+	return func(o *options) {
+		if checksumer != nil {
+			o.Checksumer = checksumer
+		}
+	}
+}
+
 // DefaultOptions returns the default WAL options.
 func DefaultOptions() *options {
 	return &options{
@@ -87,7 +99,7 @@ func DefaultOptions() *options {
 		PageSize:    PageSize,
 		BufferSize:  BufferSize,
 		SegmentSize: SegmentSize,
-		Checksumer:  checksum.NewCRC(),
+		Checksumer:  checksum.NewCRCChecksumer(),
 		Encoder:     encoding.NewProtobufEncoder(),
 	}
 }

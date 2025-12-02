@@ -42,10 +42,13 @@ const (
 	// MetaDir is the directory where the metadata for WAL files is stored.
 	MetaDir = DataDir + "/meta"
 
+	// Version represents the version of the WAL format.
 	Version = 1
 
-	Magic = 1
+	// Magic is a magic number used to identify WAL files.
+	Magic = 0xDEADC0DE
 
+	// HeaderSize is the size of the WAL header in bytes.
 	HeaderSize = 51
 )
 

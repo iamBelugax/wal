@@ -5,9 +5,11 @@ import (
 	"encoding/binary"
 )
 
+// sha represents a SHA-256 based checksumer.
 type sha struct{}
 
-func NewSHA() *sha {
+// NewSHAChecksumer creates a new SHA-256 checksumer.
+func NewSHAChecksumer() *sha {
 	return &sha{}
 }
 
