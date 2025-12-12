@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"path/filepath"
 	"time"
 
 	"github.com/iamBelugax/wal/internal/domain"
@@ -25,19 +26,20 @@ type wal struct {
 }
 
 func Open(options ...Option) (*wal, error) {
-	log, err := logger.New("wal.log", zapcore.InfoLevel)
-	if err != nil {
-		return nil, err
-	}
-
 	opts := DefaultOptions()
 	for _, option := range options {
 		option(opts)
 	}
 
+	logsDir := filepath.Join(opts.DataDir, "wal-logs.log")
+	log, err := logger.New(logsDir, zapcore.InfoLevel)
+	if err != nil {
+		return nil, domain.MakeWalError(domain.ErrKindInternal, err, "failed to create logger")
+	}
+
 	lastSegmentId, err := LastSegmentID(opts.DataDir)
 	if err != nil {
-		return nil, err
+		return nil, domain.MakeWalError(domain.ErrKindInternal, err, "failed to find last segment id")
 	}
 
 	var newSegmentId uint64 = 1
@@ -47,12 +49,12 @@ func Open(options ...Option) (*wal, error) {
 
 	segmentName, err := MakeSegmentName(newSegmentId)
 	if err != nil {
-		return nil, err
+		return nil, domain.MakeWalError(domain.ErrKindInternal, err, "failed to make segment name")
 	}
 
 	segment, err := segment.Open(newSegmentId, segmentName)
 	if err != nil {
-		return nil, err
+		return nil, domain.MakeWalError(domain.ErrKindInternal, err, "failed to open segment")
 	}
 
 	wal := wal{log: log, opts: opts, activeSegment: segment}
@@ -74,11 +76,11 @@ func Open(options ...Option) (*wal, error) {
 }
 
 func (w *wal) Append(ctx context.Context, payload []byte) (uint64, error) {
-	// 1. I can't use domain.Header directly in Encoder.
-	// 2. Create new types for header and record.
-	// 3. Change the encoder interface to use new types and add a new method to encode the header also.
-	// 4. First encode the header and record with new types.
-	// 5. Then generate the checksum for both and append and again encode them
+	if len(payload) > MaxPayloadSize {
+		return 0, fmt.Errorf(
+			"payload size overflow, expected max %d bytes got %d bytes", MaxPayloadSize, len(payload),
+		)
+	}
 
 	record := &domain.Record{
 		Payload: payload,

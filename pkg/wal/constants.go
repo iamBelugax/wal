@@ -50,6 +50,8 @@ const (
 
 	// HeaderSize is the size of the WAL header in bytes.
 	HeaderSize = 51
+
+	MaxPayloadSize = 10 * 1024 * 1024
 )
 
 // MakeSegmentName returns the filename for a WAL segment based on its numeric ID.
